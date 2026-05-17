@@ -1,0 +1,12 @@
+const { Router } = require('express');
+const controller = require('./recensioni_controller');
+const router = Router();
+
+
+router.get('/', controller.getRecensioniList);
+
+
+router.post('/', controller.addRecensione);
+
+
+module.exports = router;
