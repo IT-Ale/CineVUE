@@ -3,15 +3,21 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <main>
+  <div class="col-12">
     <div id="intro">
-    <h2>Benvenuti in questo sito</h2>
+      <h1>Benvenuti su Cineva</h1>
       <p>
         Su <i>Cineva</i> potete scrivere recensioni su <u>film e serie TV</u> 
         e condividere i vostri pensieri con la <b>community</b>!
       </p>
     </div>
-    <hr>
+  </div>
+
+  <aside class="col-2">
+    <!-- Spazio vuoto o menu laterale -->
+  </aside>
+
+  <main class="col-8">
     <h2 class="review-title">Recensioni in evidenza</h2>
 
     <article class="newsCard">
@@ -42,7 +48,10 @@ import { RouterLink } from 'vue-router'
       </p>
       <p><b>Giudizio:</b> 2/5 - <b>Likes:</b> 800 - <b>Dislikes:</b> 1.5k</p>
     </article>
-
   </main>
+
+  <aside class="col-2">
+    <!-- Spazio per banner pubblicitari o suggerimenti -->
+  </aside>
 </template>
 
