@@ -3,7 +3,7 @@ const db = pgp((
 {
 host: 'localhost',
 port: 5432,
-database: 'cinevue_db',
+database: 'cineva',
 user: 'alessio',
 password: 'Alessio05'
 }

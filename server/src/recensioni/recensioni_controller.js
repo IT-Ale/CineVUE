@@ -49,7 +49,18 @@ const addRecensione = async (req, res) => {
     }
 };
 
+const getTopRatedFilms = async (req, res) => {
+    try {
+        const rows = await db.query(queries.getTopRatedFilms);
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Errore nel recupero dei film consigliati");
+    }
+};
+
 module.exports = {
     getRecensioniList,
-    addRecensione
+    addRecensione,
+    getTopRatedFilms
 };

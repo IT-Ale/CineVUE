@@ -1,5 +1,30 @@
-<script setup>
-import { RouterLink } from 'vue-router'
+<script>
+import ReviewCard from '@/components/ReviewCard.vue'
+import * as Api from '@/utils/apis.js'
+
+export default {
+  components: {
+    ReviewCard
+  },
+  data() {
+    return {
+      reviews: []
+    }
+  },
+  methods: {
+    async getReviews() {
+      try {
+        const data = await Api.getReviews()
+        this.reviews = data
+      } catch (error) {
+        console.error("Errore nel caricamento delle recensioni:", error)
+      }
+    }
+  },
+  mounted() {
+    this.getReviews()
+  }
+}
 </script>
 
 <template>
@@ -20,38 +45,31 @@ import { RouterLink } from 'vue-router'
   <main class="col-8">
     <h2 class="review-title">Recensioni in evidenza</h2>
 
-    <article class="newsCard">
-      <h4 class="review-content">MommyDemi - "Ancora"? No grazie</h4>
-      <p class="review-content">Ma davvero? Davvero Mikey Madison ha portato a casa l’Oscar per la miglior attrice protagonista mentre The Substance e una straordinaria Demi Moore sono state ignorate? Siamo
-      davanti all'ennesima dimostrazione che l’Academy è un circo autoreferenziale, più interessato a seguire mode del momento che a premiare il vero talento</p>
-      <p><b>Giudizio:</b> 1/5 - <b>Likes:</b> 1.2k - <b>Dislikes:</b> 392</p>
-    </article>
+    <!-- Filtriamo per voto > 3 come richiesto dall'esercizio della Lezione 8 -->
+    <div v-for="review in reviews" :key="review.id">
+      <ReviewCard 
+        v-if="review.voto > 3"
+        :titolo="review.titolo"
+        :commento="review.commento"
+        :voto="review.voto"
+        :num_like="review.num_like"
+        :num_dislike="review.num_dislike"
+      />
+    </div>
 
-    <article class="newsCard">
-      <h4 class="review-content">CinephilePaul - "The Bear" è pura ansia (meravigliosa)</h4>
-      <p class="review-content">
-        Carmy Berzatto non è solo uno chef, è il ritratto del trauma generazionale servito su un piatto d'argento. 
-        La regia ti fa sentire l'odore del grasso e il rumore delle stampanti delle comande fin dentro le ossa. 
-        Se non avete ancora visto la seconda stagione, state perdendo il miglior pezzo di televisione degli ultimi dieci anni. 
-        Date tutti gli Emmy a Jeremy Allen White, subito!
-      </p>
-      <p><b>Giudizio:</b> 5/5 - <b>Likes:</b> 2.5k - <b>Dislikes:</b> 45</p>
-    </article>
-
-    <article class="newsCard">
-      <h4 class="review-content">RetroGamer99 - "Joker 2": Un musical? Davvero?</h4>
-      <p class="review-content">
-        Hanno preso tutto quello che c'era di sporco, cattivo e reale nel primo film e l'hanno trasformato in un 
-        duetto canoro infinito. Lady Gaga è sprecata e Joaquin Phoenix sembra quasi annoiato dal suo stesso personaggio. 
-        Capisco la voglia di decostruire il mito, ma qui hanno decostruito anche la pazienza degli spettatori. 
-        Un sequel che nessuno aveva chiesto e che nessuno ricorderà.
-      </p>
-      <p><b>Giudizio:</b> 2/5 - <b>Likes:</b> 800 - <b>Dislikes:</b> 1.5k</p>
-    </article>
+    <h2 class="review-title" style="margin-top: 30px;">Tutte le recensioni</h2>
+    <ReviewCard 
+      v-for="review in reviews" 
+      :key="'all-'+review.id"
+      :titolo="review.titolo"
+      :commento="review.commento"
+      :voto="review.voto"
+      :num_like="review.num_like"
+      :num_dislike="review.num_dislike"
+    />
   </main>
 
   <aside class="col-2">
     <!-- Spazio per banner pubblicitari o suggerimenti -->
   </aside>
 </template>
-
