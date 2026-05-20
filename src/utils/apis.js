@@ -29,10 +29,22 @@ const addReview = async (review) => {
     return await response.json();
 };
 
+const login = async (credentials) => {
+    const response = await fetch('/api/utenti/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
+    });
+    return await response.json();
+};
+
 export {
     getReviews,
     getReviewById,
     getFilms,
     getNews,
-    addReview
+    addReview,
+    login
 };

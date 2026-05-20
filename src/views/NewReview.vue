@@ -1,13 +1,18 @@
 <script>
 import * as Api from '@/utils/apis.js'
+import { useAuthStore } from '@/stores/auth'
 
 export default {
+  setup() {
+    const authStore = useAuthStore()
+    return { authStore }
+  },
   data() {
     return {
       films: [],
       newReview: {
         film_id: '',
-        utente_id: 'm_rossi53', 
+        utente_id: '', 
         voto: 5,
         commento: '',
         data: new Date().toISOString().slice(0, 10),
@@ -27,11 +32,19 @@ export default {
       }
     },
     async submitReview() {
+      if (!this.authStore.user) {
+        this.message = "Devi effettuare il login per pubblicare una recensione."
+        this.isError = true
+        return
+      }
+
       if (!this.newReview.film_id || !this.newReview.commento) {
         this.message = "Per favore, compila tutti i campi."
         this.isError = true
         return
       }
+
+      this.newReview.utente_id = this.authStore.user.username
 
       try {
         const result = await Api.addReview(this.newReview)
@@ -114,30 +127,5 @@ export default {
 </template>
 
 <style scoped>
-/* Aggiungiamo solo piccoli aggiustamenti necessari per il layout del form */
-.form-item {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
-
-.status-box {
-    margin-top: 20px;
-    text-align: center;
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 8px;
-}
-
-.success-msg {
-    color: green;
-    background-color: #e7ffe7;
-}
-
-/* Nota: la classe .error-msg è già definita in main.css */
-
-.new-review-page {
-    /* Questi stili sono già in main.css, li richiamiamo per sicurezza del componente */
-    margin-top: 20px;
-}
+/* Stili spostati in main.css */
 </style>
